@@ -102,6 +102,31 @@
     .hero-logo { width: 84px; }
   }
 
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+  .tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding: 10px 2px;
+    margin-right: 26px;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+  }
+  .tab.active { color: var(--navy); border-bottom: 2px solid var(--navy); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .card-links { display: flex; gap: 20px; flex-wrap: wrap; }
+
   .card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -179,8 +204,14 @@
 </header>
 
 <main>
-  <div class="section-label">Visores disponibles</div>
-  <div class="grid">
+  <div class="tabs" role="tablist" aria-label="Secciones">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-visores" id="tab-visores">Visores</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-accesos" id="tab-accesos">Accesos Directos</button>
+  </div>
+
+  <section id="panel-visores" role="tabpanel" aria-labelledby="tab-visores" class="tab-panel active">
+    <div class="section-label">Visores disponibles</div>
+    <div class="grid">
 
     <div class="card">
       <span class="code-tag">CP</span>
@@ -230,10 +261,62 @@
       <a class="open-link" href="https://control-financiero-acepta.fernando-saavedra.chatgpt.site/" target="_blank" rel="noopener">Abrir visor ↗</a>
     </div>
 
-  </div>
+    </div>
+  </section>
+
+  <section id="panel-accesos" role="tabpanel" aria-labelledby="tab-accesos" class="tab-panel">
+    <div class="section-label">Accesos directos · uso diario</div>
+    <div class="grid">
+
+    <div class="card">
+      <span class="code-tag">ST</span>
+      <span class="badge external">Disponible · externo</span>
+      <h3>SIGFE Transaccional</h3>
+      <p>Sistema transaccional del Estado para el registro presupuestario, contable y de tesorería de la institución.</p>
+      <a class="open-link" href="https://sb.sigfe.gob.cl/sigfe/faces/autenticacion" target="_blank" rel="noopener">Abrir SIGFE ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="code-tag">SR</span>
+      <span class="badge external">Disponible · externo</span>
+      <h3>SIGFE Reportabilidad</h3>
+      <p>Reportes presupuestarios y contables asociados al SIGFE Transaccional, con actualización ligada al ciclo operativo diario.</p>
+      <a class="open-link" href="https://sb.sigfe.gob.cl/sigfeReports/faces/autenticacion" target="_blank" rel="noopener">Abrir reportes ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="code-tag">TS</span>
+      <span class="badge external">Disponible · externo</span>
+      <h3>Trámites SIMPLE</h3>
+      <p>Plataforma de solicitudes y trámites financieros, con acceso a nivel DEP y a nivel SLEP Petorca.</p>
+      <div class="card-links">
+        <a class="open-link" href="https://tramites.dep.gob.cl" target="_blank" rel="noopener">Abrir DEP ↗</a>
+        <a class="open-link" href="https://tramites.sleppetorca.gob.cl" target="_blank" rel="noopener">Abrir SLEP Petorca ↗</a>
+      </div>
+    </div>
+
+    </div>
+  </section>
 </main>
 
 <footer>SLEP Petorca · Subdepartamento de Finanzas · Panel interno de visores</footer>
+
+<script>
+  document.querySelectorAll('.tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (t) {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.tab-panel').forEach(function (p) {
+        p.classList.remove('active');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+</script>
 
 </body>
 </html>
