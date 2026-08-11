@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Visores — Finanzas SLEP Petorca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0F2A43;
+    --navy-dark: #0A1E30;
+    --green: #1F8A5F;
+    --green-bg: #E7F5EE;
+    --amber: #B45309;
+    --amber-bg: #FCEFE3;
+    --bg: #F5F6F8;
+    --card: #FFFFFF;
+    --border: #E2E5EA;
+    --text: #16202B;
+    --muted: #5B6572;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+  header.hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+    color: #fff;
+    padding: 48px 32px 40px;
+  }
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  .hero-text { flex: 1; min-width: 0; }
+  .hero-logo {
+    width: 110px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    flex-shrink: 0;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 30px; margin: 0 0 12px; font-weight: 700; letter-spacing: -0.01em; }
+  .hero p.lede {
+    max-width: 640px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+    margin: 0 0 18px;
+    font-size: 15px;
+  }
+  .advisory {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.92);
+  }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 40px 32px 64px; }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+    header.hero { padding: 36px 20px 32px; }
+    main { padding: 32px 20px 48px; }
+    .hero-inner { flex-direction: column-reverse; gap: 20px; }
+    .hero-logo { width: 84px; }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 22px 20px;
+    position: relative;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .card:hover { border-color: #c7cdd6; transform: translateY(-1px); }
+
+  .code-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #fff;
+    background: var(--navy);
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 5px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 4px 9px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .badge.ok { background: var(--green-bg); color: var(--green); }
+  .badge.restricted { background: var(--amber-bg); color: var(--amber); }
+  .badge.external { background: #E7F0FA; color: #2563A8; }
+
+  h3 { margin: 4px 0 8px; font-size: 18px; font-weight: 700; padding-right: 56px; }
+  .card p { margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--muted); }
+
+  .open-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .open-link:hover { color: var(--green); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 22px 32px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="eyebrow">Subdepartamento de Finanzas · SLEP Petorca</div>
+      <h1>Panel de Visores — Finanzas</h1>
+      <p class="lede">Herramientas y visores internos del equipo de Finanzas del Servicio Local de Educación Pública de Petorca.</p>
+      <div class="advisory">⚠️ Uso interno del equipo de Finanzas — no compartir estos enlaces fuera del equipo.</div>
+    </div>
+    <img class="hero-logo" src="brand/somos-slep-petorca.png" alt="Somos SLEP Petorca — Educando desde el territorio">
+  </div>
+</header>
+
+<main>
+  <div class="section-label">Visores disponibles</div>
+  <div class="grid">
+
+    <div class="card">
+      <span class="code-tag">CP</span>
+      <span class="badge restricted">Disponible · acceso restringido</span>
+      <h3>Calendario de Permisos</h3>
+      <p>Feriados legales, permisos administrativos y licencias médicas del equipo. Vista mensual y listado anual, registro de horas compensatorias y filtro por persona. Acceso mediante enlace enviado al correo institucional.</p>
+      <a class="open-link" href="https://finanzas-slep-petorca.github.io/Calendariopermisos/" target="_blank" rel="noopener">Abrir visor ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="code-tag">CR</span>
+      <span class="badge ok">Disponible · herramienta</span>
+      <h3>Centralización de Remuneraciones</h3>
+      <p>Unifica los archivos Maestro e Informe de Gasto por área (Educación / Jardines), mes, año y proceso, para generar la centralización mensual. Corre en el navegador (Python/Pyodide), sin enviar datos a un servidor.</p>
+      <a class="open-link" href="https://finanzas-slep-petorca.github.io/centralizacion-remuneraciones/" target="_blank" rel="noopener">Abrir herramienta ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="code-tag">DF</span>
+      <span class="badge ok">Disponible · datos institucionales</span>
+      <h3>Dashboard Financiero</h3>
+      <p>Flujo de caja P01 y P02 por fuente de financiamiento, ejecución presupuestaria, saldos bancarios, cruce de facturas ACEPTA–SIGFE, subvenciones y calendario de eventos críticos de caja.</p>
+      <a class="open-link" href="https://finanzas-slep-petorca.github.io/dashboard-financiero/" target="_blank" rel="noopener">Abrir visor ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="code-tag">EF</span>
+      <span class="badge ok">Disponible · datos institucionales</span>
+      <h3>Estado Financiero por Establecimiento</h3>
+      <p>Ingresos reales vs. remuneraciones por establecimiento y jardín JUNJI (RBD), con estado de superávit, riesgo o déficit, y filtros por comuna, fuente de financiamiento y situación.</p>
+      <a class="open-link" href="https://finanzas-slep-petorca.github.io/slep-petorca-dashboard/" target="_blank" rel="noopener">Abrir visor ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="code-tag">RC</span>
+      <span class="badge external">Disponible · externo</span>
+      <h3>Recepción Conforme — Gestión de Compras</h3>
+      <p>Formulario de recepción conforme y certificación de ejecución de órdenes de compra (P01/P02): CDP, resolución, cuotas, multas y generación de PDF. Incluye panel de administración aparte; la base administrativa no es visible desde el formulario.</p>
+      <a class="open-link" href="https://rc-slep-petorca.fernando-saavedra.chatgpt.site/" target="_blank" rel="noopener">Abrir formulario ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="code-tag">CA</span>
+      <span class="badge external">Disponible · externo</span>
+      <h3>Control Financiero ACEPTA</h3>
+      <p>Seguimiento y control financiero de facturas en la plataforma ACEPTA (Mercado Público), como complemento operativo al cruce ACEPTA–SIGFE.</p>
+      <a class="open-link" href="https://control-financiero-acepta.fernando-saavedra.chatgpt.site/" target="_blank" rel="noopener">Abrir visor ↗</a>
+    </div>
+
+  </div>
+</main>
+
+<footer>SLEP Petorca · Subdepartamento de Finanzas · Panel interno de visores</footer>
+
+</body>
+</html>
